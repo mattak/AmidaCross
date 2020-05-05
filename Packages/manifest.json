@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "com.neuecc.unirx": "https://github.com/neuecc/UniRx.git?path=Assets/Plugins/UniRx/Scripts",
     "com.unity.2d.animation": "3.1.1",
     "com.unity.2d.pixel-perfect": "2.0.4",
     "com.unity.2d.psdimporter": "2.1.0",
@@ -44,5 +45,11 @@
     "com.unity.modules.vr": "1.0.0",
     "com.unity.modules.wind": "1.0.0",
     "com.unity.modules.xr": "1.0.0"
+  },
+  "lock": {
+    "com.neuecc.unirx": {
+      "revision": "HEAD",
+      "hash": "284d5c50d3f1ddd9fa7df3d382ea904732a9c2ff"
+    }
   }
 }
