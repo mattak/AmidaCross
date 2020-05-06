@@ -19,7 +19,6 @@ namespace AmidaCross.UI
 
         void Render(PlayerEntity player)
         {
-            UnityEngine.Debug.Log($"Render: {player.lane}");
             if (this.BaseLanePoints.Length < 3) return;
             var target = this.BaseLanePoints[player.lane];
             this.GetComponent<MoveByLine>().StartMove(target);

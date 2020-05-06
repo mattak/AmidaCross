@@ -1,4 +1,5 @@
 using AmidaCross.Entities;
+using UnityEngine;
 
 namespace AmidaCross.Reducers
 {
@@ -11,36 +12,35 @@ namespace AmidaCross.Reducers
             this._state = state;
         }
 
-        public DotEntity Add(int lane)
+        public DotEntity Add(int lane, Vector3 localPosition)
         {
-            var id = this._state.dots.Count + 1;
-            var entity = new DotEntity(id, lane);
-            this._state.dots.Add(entity);
+            var id = this._state.dots.Value.Count + 1;
+            var entity = new DotEntity(id, lane, localPosition);
+            var list = this._state.dots.Value;
+            list.Add(entity);
+            this._state.dots.SetValueAndForceNotify(list);
             return entity;
         }
-        
+
         public void Remove(int id)
         {
-            var index = this._state.dots.FindIndex(0, it => it.id == id);
-            this._state.dots.RemoveAt(index);
+            var list = this._state.dots.Value;
+            var index = list.FindIndex(0, it => it.id == id);
+            if (index < 0) return;
+            list.RemoveAt(index);
+            this._state.dots.SetValueAndForceNotify(list);
         }
 
         public void Enter(DotEntity dot)
         {
-            UnityEngine.Debug.Log($"DotsReducer.Enter: find {dot}");
+            var list = this._state.lines.Value;
+
             // find line
-            foreach (var entity in this._state.lines)
-            {
-                UnityEngine.Debug.Log($"DotsReducer.Enter: ${entity}");
-            }
-            
             var player = this._state.player.Value;
-            var line = this._state.lines.Find(it => it.HasDot(dot.id));
+            var line = list.Find(it => it.HasDot(dot.id));
             if (line == null) return;
             if (!line.IsOnLane(player.lane)) return;
-            
-            UnityEngine.Debug.Log($"DotsReducer.Enter: update {dot}");
-            
+
             // update player lane
             player.lane = line.GetOppositeLane(player.lane);
             this._state.player.Value = player;

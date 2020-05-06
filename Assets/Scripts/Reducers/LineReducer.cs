@@ -15,14 +15,18 @@ namespace AmidaCross.Reducers
         public LineEntity Add(DotEntity d1, DotEntity d2)
         {
             var entity = new LineEntity(d1, d2);
-            this._state.lines.Add(entity);
+            var list = this._state.lines.Value;
+            list.Add(entity);
+            this._state.lines.SetValueAndForceNotify(list);
             return entity;
         }
 
         public void Remove(int dotId)
         {
-            var lines = this._state.lines.Where(it => it.dot1.id != dotId && it.dot2.id != dotId).ToList();
-            this._state.lines = lines;
+            var previousCount = this._state.lines.Value.Count;
+            var lines = this._state.lines.Value.Where(it => it.dot1.id != dotId && it.dot2.id != dotId).ToList();
+            if (lines.Count == previousCount) return;
+            this._state.lines.SetValueAndForceNotify(lines);
         }
     }
 }

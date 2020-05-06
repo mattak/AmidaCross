@@ -7,16 +7,15 @@ namespace AmidaCross.UI
     public class DotObject : MonoBehaviour
     {
         public int lane = default;
-        public int id = default; // TODO: remove debug
+        public int id = default;
         public DotEntity Entity => _entity;
         
         private DotEntity _entity = default;
 
         private void Awake()
         {
-            this._entity = GlobalReducers.dots.Add(lane);
+            this._entity = GlobalReducers.dots.Add(lane, this.transform.localPosition);
             this.id = this.Entity.id;
-            UnityEngine.Debug.Log($"Awake: {lane} -> {this.Entity}");
         }
         
         private void OnDestroy()
